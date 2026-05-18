@@ -1,5 +1,5 @@
 {
-	"name": "theaminul/feedback-sdk",
+	"name": "theaminulai/feedback-sdk",
 	"description": "Client SDK — adds a deactivation feedback modal to any WordPress plugin.",
 	"type": "library",
 	"license": "GPL-2.0-or-later",
