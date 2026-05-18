@@ -1,0 +1,198 @@
+/* =============================================
+   Feedback SDK — Modal CSS with full theming
+   All colors driven by CSS custom properties
+   that can be overridden per-slug from PHP.
+   ============================================= */
+
+/* Default token values (overridden by inline PHP) */
+.feedback-sdk-overlay {
+	--fbk-primary:        #9b59e8;
+	--fbk-gradient:       linear-gradient(135deg, #c94cbf, #7b6ef6);
+	--fbk-overlay:        rgba(15, 15, 30, 0.55);
+	--fbk-modal-bg:       #ffffff;
+	--fbk-modal-radius:   20px;
+	--fbk-opt-bg:         #faf8ff;
+	--fbk-opt-active-bg:  #f9f4ff;
+	--fbk-opt-active-bdr: #9b59e8;
+	--fbk-text:           #1a1a2e;
+	--fbk-muted:          #9ca3af;
+	--fbk-border:         #ede8f5;
+	--fbk-font:           'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	--fbk-font-size:      13.5px;
+}
+
+/* Overlay backdrop */
+.feedback-sdk-overlay {
+	position: fixed;
+	inset: 0;
+	background: var(--fbk-overlay);
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(3px);
+	opacity: 0;
+	transition: opacity .22s;
+}
+
+.feedback-sdk-overlay.fbk-sdk-visible { opacity: 1; }
+
+.feedback-sdk-overlay.fbk-sdk-visible .feedback-sdk-modal {
+	animation: fbkSlideUp .25s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+
+@keyframes fbkSlideUp { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: none; } }
+@keyframes fbk-sdk-shake { 0%,100%{transform:none} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+.fbk-shake { animation: fbk-sdk-shake .3s ease; }
+
+/* Modal box */
+.feedback-sdk-modal {
+	background: var(--fbk-modal-bg);
+	border-radius: var(--fbk-modal-radius);
+	width: 100%;
+	max-width: 440px;
+	margin: 16px;
+	overflow: hidden;
+	box-shadow: 0 20px 60px rgba(0,0,0,.18), 0 4px 12px rgba(0,0,0,.08);
+	font-family: var(--fbk-font);
+	font-size: var(--fbk-font-size);
+	animation: fbkSlideUp .25s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Header ────────────────────────────────── */
+.fbk-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 20px 14px;
+	border-bottom: 1px solid color-mix(in srgb, var(--fbk-border) 100%, transparent);
+}
+.fbk-modal-brand { display: flex; align-items: center; gap: 10px; }
+
+/* Brand icon — circle with gradient or custom image */
+.fbk-modal-brand-icon {
+	width: 34px;
+	height: 34px;
+	border-radius: 10px;
+	background: var(--fbk-gradient);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 18px;
+	flex-shrink: 0;
+	overflow: hidden;
+}
+.fbk-modal-brand-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+.fbk-modal-brand-name { font-size: 15px; font-weight: 600; color: var(--fbk-text); }
+
+.fbk-modal-close {
+	width: 32px;
+	height: 32px;
+	border-radius: 8px;
+	border: 1.5px solid var(--fbk-border);
+	background: color-mix(in srgb, var(--fbk-opt-bg) 80%, transparent);
+	color: #aaa;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	transition: background .15s, color .15s;
+}
+.fbk-modal-close:hover { background: color-mix(in srgb, var(--fbk-primary) 15%, transparent); color: var(--fbk-primary); }
+
+/* ── Body ──────────────────────────────────── */
+.fbk-modal-body { padding: 18px 20px 0; }
+.fbk-modal-question { font-size: 14.5px; font-weight: 600; color: var(--fbk-text); line-height: 1.5; margin: 0 0 14px; }
+
+/* ── Options ───────────────────────────────── */
+.fbk-options { display: flex; flex-direction: column; gap: 7px; }
+
+.fbk-option {
+	border-radius: 12px;
+	border: 1.5px solid var(--fbk-border);
+	background: var(--fbk-opt-bg);
+	overflow: hidden;
+	transition: border-color .18s, background .18s;
+}
+.fbk-option:hover { border-color: color-mix(in srgb, var(--fbk-primary) 40%, transparent); background: color-mix(in srgb, var(--fbk-opt-active-bg) 70%, transparent); }
+.fbk-option.fbk-active { border-color: var(--fbk-opt-active-bdr); background: var(--fbk-opt-active-bg); }
+
+.fbk-option-row {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	padding: 10px 13px;
+	cursor: pointer;
+	transition: padding-left .15s;
+}
+.fbk-option:hover .fbk-option-row,
+.fbk-option.fbk-active .fbk-option-row { padding-left: 16px; }
+
+/* Radio */
+.fbk-radio { width: 17px; height: 17px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--fbk-primary) 30%, #d0c8e8); background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .18s; }
+.fbk-option.fbk-active .fbk-radio { border-color: var(--fbk-primary); }
+.fbk-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--fbk-primary); transform: scale(0); transition: transform .2s; }
+.fbk-option.fbk-active .fbk-dot { transform: scale(1); }
+
+/* Option icon */
+.fbk-opt-icon { width: 28px; height: 28px; border-radius: 7px; background: color-mix(in srgb, var(--fbk-primary) 12%, transparent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .18s; color: var(--fbk-primary); font-size: 15px; }
+.fbk-option.fbk-active .fbk-opt-icon { background: color-mix(in srgb, var(--fbk-primary) 22%, transparent); }
+
+/* Option label */
+.fbk-opt-label { font-size: var(--fbk-font-size); color: color-mix(in srgb, var(--fbk-text) 75%, transparent); flex: 1; }
+.fbk-option.fbk-active .fbk-opt-label { color: color-mix(in srgb, var(--fbk-primary) 80%, var(--fbk-text)); font-weight: 500; }
+
+/* Textarea (per option) */
+.fbk-textarea-wrap { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .32s ease, opacity .25s; padding: 0 13px; }
+.fbk-textarea-wrap.fbk-show { max-height: 110px; opacity: 1; padding: 0 13px 12px; }
+.fbk-option-ta {
+	width: 100%;
+	border: 1.5px solid color-mix(in srgb, var(--fbk-primary) 25%, #ddd4f7);
+	border-radius: 9px;
+	padding: 9px 12px;
+	font-size: calc(var(--fbk-font-size) - 1px);
+	font-family: var(--fbk-font);
+	color: var(--fbk-text);
+	background: #fff;
+	outline: none;
+	resize: none;
+	line-height: 1.5;
+	transition: border-color .18s;
+}
+.fbk-option-ta:focus { border-color: var(--fbk-primary); }
+.fbk-option-ta::placeholder { color: var(--fbk-muted); }
+
+/* GDPR */
+.fbk-gdpr { margin: 12px 0 0; font-size: 12px; color: var(--fbk-muted); display: flex; align-items: flex-start; gap: 7px; }
+.fbk-gdpr input { margin-top: 2px; accent-color: var(--fbk-primary); }
+
+/* ── Footer ────────────────────────────────── */
+.fbk-modal-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--fbk-border); margin-top: 14px; }
+.fbk-footer-right { display: flex; align-items: center; gap: 8px; }
+
+.fbk-skip-btn { background: none; border: none; font-size: calc(var(--fbk-font-size) - 1px); color: #aaa; cursor: pointer; font-family: var(--fbk-font); text-decoration: underline; text-underline-offset: 3px; transition: color .15s; padding: 0; }
+.fbk-skip-btn:hover { color: #666; }
+
+.fbk-cancel-btn { background: #f3f4f6; border: none; font-size: calc(var(--fbk-font-size) - 1px); font-weight: 500; color: #4b5563; cursor: pointer; font-family: var(--fbk-font); border-radius: 10px; padding: 9px 16px; transition: background .15s; }
+.fbk-cancel-btn:hover { background: #e5e7eb; }
+
+.fbk-submit-btn {
+	background: var(--fbk-gradient);
+	border: none;
+	color: #fff;
+	font-size: var(--fbk-font-size);
+	font-weight: 600;
+	border-radius: 10px;
+	padding: 9px 20px;
+	cursor: pointer;
+	font-family: var(--fbk-font);
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	transition: opacity .15s, transform .12s;
+}
+.fbk-submit-btn:hover { opacity: .88; transform: translateY(-1px); }
+.fbk-submit-btn:active { transform: scale(.97); }
+.fbk-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }

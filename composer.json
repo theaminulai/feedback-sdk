@@ -1,0 +1,25 @@
+{
+	"name": "theaminul/feedback-sdk",
+	"description": "Client SDK — adds deactivation feedback modal to any WordPress plugin.",
+	"type": "library",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "theaminul",
+			"email": "hello@theaminul.com",
+			"homepage": "https://theaminul.com"
+		}
+	],
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=7.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"Feedback_SDK\\": "includes/"
+		}
+	},
+	"config": {
+		"optimize-autoloader": true
+	}
+}
