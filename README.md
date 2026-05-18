@@ -6,7 +6,7 @@
 
 **The client-side Composer package.** Drop into any WordPress plugin to show a beautiful deactivation feedback modal and send data to the central Feedback server.
 
-[![Packagist](https://img.shields.io/packagist/v/theaminul/feedback-sdk?label=packagist)](https://packagist.org/packages/theaminul/feedback-sdk)
+[![Packagist](https://img.shields.io/packagist/v/theaminulai/feedback-sdk?label=packagist)](https://packagist.org/packages/theaminulai/feedback-sdk)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple?logo=php)](https://php.net)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue?logo=wordpress)](https://wordpress.org)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green)](https://www.gnu.org/licenses/gpl-2.0.html)
@@ -59,7 +59,7 @@ Branded modal opens with animated slide-up
 ### Option A — Composer (recommended)
 
 ```bash
-composer require theaminul/feedback-sdk
+composer require theaminulai/feedback-sdk
 ```
 
 Composer's autoloader handles class loading automatically via PSR-4.

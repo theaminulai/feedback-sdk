@@ -36,7 +36,7 @@ spl_autoload_register(
 );
 
 /**
- * Initialise the SDK for a plugin.
+ * Initialise the SDK for a plugin. for expm1le:
  *
  * Usage:
  *  \Feedback_SDK\SDK::init([
