@@ -308,7 +308,7 @@
 	FeedbackSdkModal.prototype._buildHtml = function () {
 		var cfg       = this.cfg;
 		var design    = cfg.design    || 'card';
-		var showIcons = cfg.showIcons !== false;  // default true
+		var showIcons = !! cfg.showIcons;  // 0 → false, 1 → true
 
 		// Brand icon — image takes priority over icon class.
 		var brandIconHtml = cfg.brandIconUrl
