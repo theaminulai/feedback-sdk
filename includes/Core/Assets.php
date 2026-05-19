@@ -127,8 +127,17 @@ class Assets {
 	 */
 	private function sdk_url(): string {
 		// plugin_dir_url() needs a file path, not a directory.
-		// FEEDBACK_SDK_FILE is the absolute path to feedback-sdk.php.
-		return plugin_dir_url( FEEDBACK_SDK_FILE );
+		// Prefer the global FEEDBACK_SDK_FILE constant when present (defined
+		// by the package entry file). When the SDK is installed via Composer
+		// the entry file may not be loaded, so fall back to resolving the
+		// SDK root relative to this file.
+		if ( defined( 'FEEDBACK_SDK_FILE' ) ) {
+			return plugin_dir_url( FEEDBACK_SDK_FILE );
+		}
+
+		// Attempt to locate the SDK root (two levels up from includes/Core).
+		$root_file = dirname( __DIR__, 2 ) . '/feedback-sdk.php';
+		return plugin_dir_url( $root_file );
 	}
 
 	/**
