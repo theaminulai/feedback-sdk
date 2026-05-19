@@ -93,7 +93,7 @@ class Assets {
 				'nonce'        => wp_create_nonce( "feedback_sdk_{$slug}" ),
 				'gdpr'         => (bool) ( $this->config['gdpr'] ?? false ),
 				'debug'        => (bool) ( $this->config['debug'] ?? false ),
-				'showIcons'    => (bool) ( $this->config['show_icons'] ?? true ),
+				'showIcons'    => ( $this->config['show_icons'] ?? true ) ? 1 : 0,
 				'theme'        => sanitize_key( $this->config['theme'] ?? 'default' ),
 				'design'       => sanitize_key( $this->config['design'] ?? 'card' ),
 				'brandIcon'    => $this->config['brand_icon']     ?? 'ti-bolt',
