@@ -52,8 +52,11 @@ class SDK {
 				'api_endpoint'   => '',
 				'api_key'        => '',
 				'is_pro'         => false,
-				'gdpr'           => false,  // show GDPR consent checkbox.
+				'gdpr'           => false,   // show GDPR consent checkbox.
 				'debug'          => false,
+				'show_icons'     => true,    // show/hide reason icons.
+				'theme'          => 'default', // colour theme preset.
+				'design'         => 'card',  // layout design variant.
 			)
 		);
 

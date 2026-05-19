@@ -15,15 +15,13 @@
  * @package MyPlugin
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 1. MINIMAL — only required keys (copy-paste starting point)
-// ─────────────────────────────────────────────────────────────────────────────
 
 add_action( 'plugins_loaded', function () {
 
     \Feedback_SDK\Core\SDK::init([
 
-        // ── REQUIRED ─────────────────────────────────────────────────────────
+        // REQUIRED 
 
         /**
          * Human-readable plugin name.
@@ -79,17 +77,12 @@ add_action( 'plugins_loaded', function () {
 }, 20 );
 
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 2. COMPLETE — every available option
-// ─────────────────────────────────────────────────────────────────────────────
 
 add_action( 'plugins_loaded', function () {
 
     \Feedback_SDK\Core\SDK::init([
-
-        // ════════════════════════════════════════════════════════════════════
         // REQUIRED
-        // ════════════════════════════════════════════════════════════════════
 
         'plugin_name'    => 'ElementsKit',
         'plugin_slug'    => 'elementskit-lite',
@@ -97,9 +90,7 @@ add_action( 'plugins_loaded', function () {
         'api_endpoint'   => 'https://api.theaminul.com/wp-json/feedback/v1/collect',
         'api_key'        => defined( 'THEAMINUL_FEEDBACK_KEY' ) ? THEAMINUL_FEEDBACK_KEY : '',
 
-        // ════════════════════════════════════════════════════════════════════
         // BEHAVIOUR
-        // ════════════════════════════════════════════════════════════════════
 
         /**
          * Mark this feedback as coming from the Pro (paid) version.
@@ -143,9 +134,7 @@ add_action( 'plugins_loaded', function () {
          */
         'modal_title' => 'Help us improve — why are you deactivating %s?',
 
-        // ════════════════════════════════════════════════════════════════════
         // BRANDING
-        // ════════════════════════════════════════════════════════════════════
 
         /**
          * Text shown in the modal header next to the icon.
@@ -176,10 +165,39 @@ add_action( 'plugins_loaded', function () {
          * Example : 'https://cdn.theaminul.com/elementskit/icon.png'
          */
         'brand_icon_url' => plugins_url( 'assets/images/icon.png', __FILE__ ),
+        //
+        // Selects a built-in colour preset. Applies immediately via CSS custom properties.
+        // Individual colour keys below can always override a theme token.
+        //
+        // Available themes:
+        //   'default'  — Purple gradient, white background (WPmet brand)
+        //   'ocean'    — Blue & teal, professional
+        //   'rose'     — Pink & red, warm and friendly
+        //   'forest'   — Green & earthy, calm and trustworthy
+        //   'midnight' — Dark charcoal background, modern and bold
+        //
+        'theme' => 'ocean',
 
-        // ════════════════════════════════════════════════════════════════════
+        //
+        // Selects a layout/visual design variant.
+        // Applied via `data-design` attribute on the modal element (CSS handles the rest).
+        //
+        // Available designs:
+        //   'card'    — Default: rounded card with soft shadow
+        //   'flat'    — No shadow, sharp 8px radius, thin border
+        //   'minimal' — Transparent options, max whitespace, accent left-border on active
+        //   'bold'    — Gradient header strip, thick option borders
+        //   'glass'   — Frosted glass / backdrop-blur effect
+        //
+        'design' => 'card',
+
+        //
+        // true  → show the small icon bubble on every option row (default)
+        // false → hide all reason icons (cleaner/minimal look)
+        //
+        'show_icons' => true,
+
         // TYPOGRAPHY
-        // ════════════════════════════════════════════════════════════════════
 
         /**
          * Font family name used for all modal text.
@@ -210,9 +228,7 @@ add_action( 'plugins_loaded', function () {
          */
         'font_size_base' => 13,
 
-        // ════════════════════════════════════════════════════════════════════
         // COLORS
-        // ════════════════════════════════════════════════════════════════════
 
         /**
          * Primary accent color.
@@ -308,9 +324,7 @@ add_action( 'plugins_loaded', function () {
          */
         'border_color' => '#e7e5e4',
 
-        // ════════════════════════════════════════════════════════════════════
         // BUTTON & UI LABELS  (i18n)
-        // ════════════════════════════════════════════════════════════════════
 
         /**
          * Override any text label shown in the modal.
@@ -346,11 +360,9 @@ add_action( 'plugins_loaded', function () {
             'gdpr_label' => __( 'I agree to share this feedback data anonymously.', 'my-awesome-plugin' ),
         ],
 
-        // ════════════════════════════════════════════════════════════════════
         // REASONS  (three mutually exclusive options — pick ONE)
-        // ════════════════════════════════════════════════════════════════════
 
-        // ── Option A: Hide specific default reasons ───────────────────────
+        // ── Option A: Hide specific default reasons 
         //
         // Remove one or more built-in reasons by key.
         // The rest remain in their original order.
@@ -363,7 +375,7 @@ add_action( 'plugins_loaded', function () {
         // 'hide_reasons' => [ 'too-expensive', 'found-better' ],
 
 
-        // ── Option B: Append extra reasons AFTER the defaults ─────────────
+        // ── Option B: Append extra reasons AFTER the defaults 
         //
         // Each reason must have these four keys:
         //   key   (string) — unique identifier, sent to server as the reason value
@@ -387,7 +399,7 @@ add_action( 'plugins_loaded', function () {
         // ],
 
 
-        // ── Option C: Replace ALL reasons with your own list ──────────────
+        // ── Option C: Replace ALL reasons with your own list 
         //
         // When 'reasons' is set, default reasons are completely ignored.
         // The SDK shows exactly what you define here — no more, no less.
@@ -454,9 +466,7 @@ add_action( 'plugins_loaded', function () {
 }, 20 );
 
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 3. HOOKS — modify behaviour without editing SDK files
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Add custom data to the payload before it is sent to the server.
@@ -478,6 +488,42 @@ add_filter( 'feedback_sdk/payload', function ( array $payload, string $slug ): a
 
 }, 10, 2 );
 
+/*
+ THEMES (colour presets — set 'theme' key):
+ ┌─────────────┬───────────────────────────────────────────────┐
+ │ 'default'   │ Purple gradient, white modal (WPmet brand)    │
+ │ 'ocean'     │ Blue & teal, light header/footer strips       │
+ │ 'rose'      │ Pink & red, warm header/footer                │
+ │ 'forest'    │ Green & earthy, calm look                     │
+ │ 'midnight'  │ Dark #1e1e2e background, indigo accent        │
+ └─────────────┴───────────────────────────────────────────────┘
+
+ DESIGNS (layout variants — set 'design' key):
+ ┌─────────────┬───────────────────────────────────────────────┐
+ │ 'card'      │ Rounded card, soft shadow (default)           │
+ │ 'flat'      │ No shadow, thin border, 8px radius            │
+ │ 'minimal'   │ Transparent options, accent left-border       │
+ │ 'bold'      │ Gradient header strip, strong option borders  │
+ │ 'glass'     │ Frosted glass / backdrop-blur                 │
+ └─────────────┴───────────────────────────────────────────────┘
+
+ Combine freely:
+   'theme' => 'midnight', 'design' => 'glass'   → dark frosted glass
+   'theme' => 'ocean',    'design' => 'bold'     → blue gradient header
+   'theme' => 'rose',     'design' => 'minimal'  → clean pink accent
+   'theme' => 'forest',   'design' => 'flat'     → green flat card
+*/
+
+
+// HOOKS
+
+// Modify payload before it is sent to the server.
+add_filter( 'feedback_sdk/payload', function ( array $payload, string $slug ): array {
+    $payload['active_theme'] = get_template();
+    return $payload;
+}, 10, 2 );
+
+// React after the send attempt.
 
 /**
  * React after the feedback has been sent (or failed).
@@ -518,9 +564,7 @@ add_filter( 'feedback_sdk/reasons', function ( array $reasons, string $slug ): a
 }, 10, 2 );
 
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 4. WHAT IS AUTOMATICALLY COLLECTED (no config needed)
-// ─────────────────────────────────────────────────────────────────────────────
 
 /*
  * The SDK automatically collects these values from WordPress — you don't
@@ -549,9 +593,7 @@ add_filter( 'feedback_sdk/reasons', function ( array $reasons, string $slug ): a
  */
 
 
-// ─────────────────────────────────────────────────────────────────────────────
 // 5. PRO vs FREE — separate init calls
-// ─────────────────────────────────────────────────────────────────────────────
 
 /*
  * If you maintain separate Free and Pro plugins, initialize the SDK in each:
