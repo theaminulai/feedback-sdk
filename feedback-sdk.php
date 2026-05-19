@@ -18,6 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! defined( 'FEEDBACK_SDK_FILE' ) ) {
+    define( 'FEEDBACK_SDK_FILE', __FILE__ );
+}
+
 // PSR-4 autoloader.
 spl_autoload_register(
 	function ( $class ) {
