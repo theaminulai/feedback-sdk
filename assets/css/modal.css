@@ -1,27 +1,35 @@
-/* =============================================
-   Feedback SDK — Modal CSS with full theming
-   All colors driven by CSS custom properties
-   that can be overridden per-slug from PHP.
-   ============================================= */
+/*
+   Feedback SDK — Modal Styles
+   All colours are CSS custom properties → theme tokens from PHP.
+   Design variants are selected by [data-design] on .feedback-sdk-modal.
 
-/* Default token values (overridden by inline PHP) */
+   Designs:
+     card      — default rounded card with subtle shadow
+     flat      — clean flat, no shadow, sharp lines
+     minimal   — bare bones, maximum whitespace
+     bold      — thick accent border header strip
+     glass     — frosted-glass backdrop blur effect
+*/
+
 .feedback-sdk-overlay {
-	--fbk-primary:        #9b59e8;
-	--fbk-gradient:       linear-gradient(135deg, #c94cbf, #7b6ef6);
-	--fbk-overlay:        rgba(15, 15, 30, 0.55);
-	--fbk-modal-bg:       #ffffff;
-	--fbk-modal-radius:   20px;
-	--fbk-opt-bg:         #faf8ff;
-	--fbk-opt-active-bg:  #f9f4ff;
+	--fbk-primary: #9b59e8;
+	--fbk-gradient: linear-gradient(135deg, #c94cbf, #7b6ef6);
+	--fbk-overlay: rgba(15, 15, 30, 0.55);
+	--fbk-modal-bg: #ffffff;
+	--fbk-modal-radius: 20px;
+	--fbk-modal-shadow: 0 20px 60px rgba(130, 60, 220, .18), 0 4px 12px rgba(0, 0, 0, .08);
+	--fbk-header-bg: #ffffff;
+	--fbk-footer-bg: #ffffff;
+	--fbk-opt-bg: #faf8ff;
+	--fbk-opt-active-bg: #f9f4ff;
 	--fbk-opt-active-bdr: #9b59e8;
-	--fbk-text:           #1a1a2e;
-	--fbk-muted:          #9ca3af;
-	--fbk-border:         #ede8f5;
-	--fbk-font:           'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-	--fbk-font-size:      13.5px;
+	--fbk-text: #1a1a2e;
+	--fbk-muted: #9ca3af;
+	--fbk-border: #ede8f5;
+	--fbk-font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+	--fbk-font-size: 13.5px;
 }
 
-/* Overlay backdrop */
 .feedback-sdk-overlay {
 	position: fixed;
 	inset: 0;
@@ -31,21 +39,15 @@
 	align-items: center;
 	justify-content: center;
 	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
 	opacity: 0;
-	transition: opacity .22s;
+	transition: opacity .22s ease;
 }
 
-.feedback-sdk-overlay.fbk-sdk-visible { opacity: 1; }
-
-.feedback-sdk-overlay.fbk-sdk-visible .feedback-sdk-modal {
-	animation: fbkSlideUp .25s cubic-bezier(.34,1.56,.64,1) forwards;
+.feedback-sdk-overlay.fbk-sdk-visible {
+	opacity: 1;
 }
 
-@keyframes fbkSlideUp { from { opacity: 0; transform: translateY(20px) scale(.97); } to { opacity: 1; transform: none; } }
-@keyframes fbk-sdk-shake { 0%,100%{transform:none} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
-.fbk-shake { animation: fbk-sdk-shake .3s ease; }
-
-/* Modal box */
 .feedback-sdk-modal {
 	background: var(--fbk-modal-bg);
 	border-radius: var(--fbk-modal-radius);
@@ -53,23 +55,34 @@
 	max-width: 440px;
 	margin: 16px;
 	overflow: hidden;
-	box-shadow: 0 20px 60px rgba(0,0,0,.18), 0 4px 12px rgba(0,0,0,.08);
+	box-shadow: var(--fbk-modal-shadow);
 	font-family: var(--fbk-font);
 	font-size: var(--fbk-font-size);
-	animation: fbkSlideUp .25s cubic-bezier(.34,1.56,.64,1);
+	opacity: 0;
+	transform: translateY(22px) scale(.97);
+	transition: opacity .25s ease, transform .25s cubic-bezier(.34, 1.56, .64, 1);
 }
 
-/* ── Header ────────────────────────────────── */
+.feedback-sdk-overlay.fbk-sdk-visible .feedback-sdk-modal {
+	opacity: 1;
+	transform: none;
+}
+
 .fbk-modal-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 18px 20px 14px;
+	background: var(--fbk-header-bg);
 	border-bottom: 1px solid color-mix(in srgb, var(--fbk-border) 100%, transparent);
 }
-.fbk-modal-brand { display: flex; align-items: center; gap: 10px; }
 
-/* Brand icon — circle with gradient or custom image */
+.fbk-modal-brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
 .fbk-modal-brand-icon {
 	width: 34px;
 	height: 34px;
@@ -83,8 +96,19 @@
 	flex-shrink: 0;
 	overflow: hidden;
 }
-.fbk-modal-brand-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
-.fbk-modal-brand-name { font-size: 15px; font-weight: 600; color: var(--fbk-text); }
+
+.fbk-modal-brand-icon img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 10px;
+}
+
+.fbk-modal-brand-name {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--fbk-text);
+}
 
 .fbk-modal-close {
 	width: 32px;
@@ -92,7 +116,7 @@
 	border-radius: 8px;
 	border: 1.5px solid var(--fbk-border);
 	background: color-mix(in srgb, var(--fbk-opt-bg) 80%, transparent);
-	color: #aaa;
+	color: var(--fbk-muted);
 	cursor: pointer;
 	display: flex;
 	align-items: center;
@@ -100,14 +124,29 @@
 	font-size: 16px;
 	transition: background .15s, color .15s;
 }
-.fbk-modal-close:hover { background: color-mix(in srgb, var(--fbk-primary) 15%, transparent); color: var(--fbk-primary); }
 
-/* ── Body ──────────────────────────────────── */
-.fbk-modal-body { padding: 18px 20px 0; }
-.fbk-modal-question { font-size: 14.5px; font-weight: 600; color: var(--fbk-text); line-height: 1.5; margin: 0 0 14px; }
+.fbk-modal-close:hover {
+	background: color-mix(in srgb, var(--fbk-primary) 15%, transparent);
+	color: var(--fbk-primary);
+}
 
-/* ── Options ───────────────────────────────── */
-.fbk-options { display: flex; flex-direction: column; gap: 7px; }
+.fbk-modal-body {
+	padding: 18px 20px 0;
+}
+
+.fbk-modal-question {
+	font-size: 14.5px;
+	font-weight: 600;
+	color: var(--fbk-text);
+	line-height: 1.5;
+	margin: 0 0 14px;
+}
+
+.fbk-options {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
 
 .fbk-option {
 	border-radius: 12px;
@@ -116,8 +155,16 @@
 	overflow: hidden;
 	transition: border-color .18s, background .18s;
 }
-.fbk-option:hover { border-color: color-mix(in srgb, var(--fbk-primary) 40%, transparent); background: color-mix(in srgb, var(--fbk-opt-active-bg) 70%, transparent); }
-.fbk-option.fbk-active { border-color: var(--fbk-opt-active-bdr); background: var(--fbk-opt-active-bg); }
+
+.fbk-option:hover {
+	border-color: color-mix(in srgb, var(--fbk-primary) 40%, transparent);
+	background: color-mix(in srgb, var(--fbk-opt-active-bg) 70%, transparent);
+}
+
+.fbk-option.fbk-active {
+	border-color: var(--fbk-opt-active-bdr);
+	background: var(--fbk-opt-active-bg);
+}
 
 .fbk-option-row {
 	display: flex;
@@ -127,26 +174,94 @@
 	cursor: pointer;
 	transition: padding-left .15s;
 }
-.fbk-option:hover .fbk-option-row,
-.fbk-option.fbk-active .fbk-option-row { padding-left: 16px; }
 
-/* Radio */
-.fbk-radio { width: 17px; height: 17px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--fbk-primary) 30%, #d0c8e8); background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: border-color .18s; }
-.fbk-option.fbk-active .fbk-radio { border-color: var(--fbk-primary); }
-.fbk-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--fbk-primary); transform: scale(0); transition: transform .2s; }
-.fbk-option.fbk-active .fbk-dot { transform: scale(1); }
+.fbk-option:hover .fbk-option-row,
+.fbk-option.fbk-active .fbk-option-row {
+	padding-left: 16px;
+}
+
+/* Radio dot */
+.fbk-radio {
+	width: 17px;
+	height: 17px;
+	border-radius: 50%;
+	border: 2px solid color-mix(in srgb, var(--fbk-primary) 30%, #d0c8e8);
+	background: var(--fbk-modal-bg);
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: border-color .18s;
+}
+
+.fbk-option.fbk-active .fbk-radio {
+	border-color: var(--fbk-primary);
+}
+
+.fbk-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--fbk-primary);
+	transform: scale(0);
+	transition: transform .2s;
+}
+
+.fbk-option.fbk-active .fbk-dot {
+	transform: scale(1);
+}
 
 /* Option icon */
-.fbk-opt-icon { width: 28px; height: 28px; border-radius: 7px; background: color-mix(in srgb, var(--fbk-primary) 12%, transparent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .18s; color: var(--fbk-primary); font-size: 15px; }
-.fbk-option.fbk-active .fbk-opt-icon { background: color-mix(in srgb, var(--fbk-primary) 22%, transparent); }
+.fbk-opt-icon {
+	width: 28px;
+	height: 28px;
+	border-radius: 7px;
+	background: color-mix(in srgb, var(--fbk-primary) 12%, transparent);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	color: var(--fbk-primary);
+	font-size: 15px;
+	transition: background .18s;
+}
+
+.fbk-option.fbk-active .fbk-opt-icon {
+	background: color-mix(in srgb, var(--fbk-primary) 22%, transparent);
+}
+
+/* hide-icons modifier set by JS when show_icons=false */
+.fbk-option-row.fbk-no-icons .fbk-opt-icon {
+	display: none;
+}
 
 /* Option label */
-.fbk-opt-label { font-size: var(--fbk-font-size); color: color-mix(in srgb, var(--fbk-text) 75%, transparent); flex: 1; }
-.fbk-option.fbk-active .fbk-opt-label { color: color-mix(in srgb, var(--fbk-primary) 80%, var(--fbk-text)); font-weight: 500; }
+.fbk-opt-label {
+	font-size: var(--fbk-font-size);
+	color: var(--fbk-text);
+	flex: 1;
+}
 
-/* Textarea (per option) */
-.fbk-textarea-wrap { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .32s ease, opacity .25s; padding: 0 13px; }
-.fbk-textarea-wrap.fbk-show { max-height: 110px; opacity: 1; padding: 0 13px 12px; }
+.fbk-option.fbk-active .fbk-opt-label {
+	color: color-mix(in srgb, var(--fbk-primary) 80%, var(--fbk-text));
+	font-weight: 500;
+}
+
+/* Textarea */
+.fbk-textarea-wrap {
+	max-height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: max-height .32s ease, opacity .25s;
+	padding: 0 13px;
+}
+
+.fbk-textarea-wrap.fbk-show {
+	max-height: 110px;
+	opacity: 1;
+	padding: 0 13px 12px;
+}
+
 .fbk-option-ta {
 	width: 100%;
 	border: 1.5px solid color-mix(in srgb, var(--fbk-primary) 25%, #ddd4f7);
@@ -155,28 +270,85 @@
 	font-size: calc(var(--fbk-font-size) - 1px);
 	font-family: var(--fbk-font);
 	color: var(--fbk-text);
-	background: #fff;
+	background: var(--fbk-modal-bg);
 	outline: none;
 	resize: none;
 	line-height: 1.5;
 	transition: border-color .18s;
 }
-.fbk-option-ta:focus { border-color: var(--fbk-primary); }
-.fbk-option-ta::placeholder { color: var(--fbk-muted); }
+
+.fbk-option-ta:focus {
+	border-color: var(--fbk-primary);
+}
+
+.fbk-option-ta::placeholder {
+	color: var(--fbk-muted);
+}
 
 /* GDPR */
-.fbk-gdpr { margin: 12px 0 0; font-size: 12px; color: var(--fbk-muted); display: flex; align-items: flex-start; gap: 7px; }
-.fbk-gdpr input { margin-top: 2px; accent-color: var(--fbk-primary); }
+.fbk-gdpr {
+	margin: 12px 0 0;
+	font-size: 12px;
+	color: var(--fbk-muted);
+	display: flex;
+	align-items: flex-start;
+	gap: 7px;
+}
 
-/* ── Footer ────────────────────────────────── */
-.fbk-modal-footer { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px 18px; border-top: 1px solid var(--fbk-border); margin-top: 14px; }
-.fbk-footer-right { display: flex; align-items: center; gap: 8px; }
+.fbk-gdpr input {
+	margin-top: 2px;
+	accent-color: var(--fbk-primary);
+}
 
-.fbk-skip-btn { background: none; border: none; font-size: calc(var(--fbk-font-size) - 1px); color: #aaa; cursor: pointer; font-family: var(--fbk-font); text-decoration: underline; text-underline-offset: 3px; transition: color .15s; padding: 0; }
-.fbk-skip-btn:hover { color: #666; }
+.fbk-modal-footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 20px 18px;
+	border-top: 1px solid var(--fbk-border);
+	margin-top: 14px;
+	background: var(--fbk-footer-bg);
+}
 
-.fbk-cancel-btn { background: #f3f4f6; border: none; font-size: calc(var(--fbk-font-size) - 1px); font-weight: 500; color: #4b5563; cursor: pointer; font-family: var(--fbk-font); border-radius: 10px; padding: 9px 16px; transition: background .15s; }
-.fbk-cancel-btn:hover { background: #e5e7eb; }
+.fbk-footer-right {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.fbk-skip-btn {
+	background: none;
+	border: none;
+	font-size: calc(var(--fbk-font-size) - 1px);
+	color: var(--fbk-muted);
+	cursor: pointer;
+	font-family: var(--fbk-font);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	transition: color .15s;
+	padding: 0;
+}
+
+.fbk-skip-btn:hover {
+	color: color-mix(in srgb, var(--fbk-muted) 70%, var(--fbk-text));
+}
+
+.fbk-cancel-btn {
+	background: #f3f4f6;
+	border: none;
+	font-size: calc(var(--fbk-font-size) - 1px);
+	font-weight: 500;
+	color: #4b5563;
+	cursor: pointer;
+	font-family: var(--fbk-font);
+	border-radius: 10px;
+	padding: 9px 16px;
+	transition: background .15s;
+}
+
+.fbk-cancel-btn:hover {
+	background: #e5e7eb;
+}
 
 .fbk-submit-btn {
 	background: var(--fbk-gradient);
@@ -193,6 +365,216 @@
 	gap: 7px;
 	transition: opacity .15s, transform .12s;
 }
-.fbk-submit-btn:hover { opacity: .88; transform: translateY(-1px); }
-.fbk-submit-btn:active { transform: scale(.97); }
-.fbk-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+.fbk-submit-btn:hover {
+	opacity: .88;
+	transform: translateY(-1px);
+}
+
+.fbk-submit-btn:active {
+	transform: scale(.97);
+}
+
+.fbk-submit-btn:disabled {
+	opacity: .6;
+	cursor: not-allowed;
+	transform: none;
+}
+
+/* shake animation for no-selection validation */
+@keyframes fbk-shake {
+
+	0%,
+	100% {
+		transform: none;
+	}
+
+	25% {
+		transform: translateX(-5px);
+	}
+
+	75% {
+		transform: translateX(5px);
+	}
+}
+
+.fbk-shake {
+	animation: fbk-shake .35s ease;
+}
+
+
+/* ================================================================
+   DESIGN VARIANTS
+   Applied via data-design="..." on .feedback-sdk-modal
+   ================================================================ */
+
+/* ────────────────────────────────────────────────────────────────
+   FLAT — no shadow, no option icons bubble, sharp 8px radius
+   ──────────────────────────────────────────────────────────────── */
+.feedback-sdk-modal[data-design="flat"] {
+	box-shadow: none;
+	border-radius: 8px;
+	border: 2px solid var(--fbk-border);
+}
+
+.feedback-sdk-modal[data-design="flat"] .fbk-option {
+	border-radius: 6px;
+}
+
+.feedback-sdk-modal[data-design="flat"] .fbk-modal-close {
+	border-radius: 4px;
+}
+
+.feedback-sdk-modal[data-design="flat"] .fbk-submit-btn {
+	border-radius: 6px;
+}
+
+.feedback-sdk-modal[data-design="flat"] .fbk-cancel-btn {
+	border-radius: 6px;
+}
+
+.feedback-sdk-modal[data-design="flat"] .fbk-modal-brand-icon {
+	border-radius: 6px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   MINIMAL — maximum whitespace, no background fills on options,
+             ultra-thin borders, left-aligned dot only
+   ──────────────────────────────────────────────────────────────── */
+.feedback-sdk-modal[data-design="minimal"] {
+	box-shadow: 0 4px 24px rgba(0, 0, 0, .10);
+	border-radius: 12px;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-modal-header,
+.feedback-sdk-modal[data-design="minimal"] .fbk-modal-footer {
+	background: transparent;
+	border-color: transparent;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-option {
+	background: transparent;
+	border-color: transparent;
+	border-radius: 8px;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-option:hover {
+	background: color-mix(in srgb, var(--fbk-primary) 5%, transparent);
+	border-color: transparent;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-option.fbk-active {
+	background: color-mix(in srgb, var(--fbk-primary) 8%, transparent);
+	border-color: transparent;
+	border-left: 3px solid var(--fbk-primary);
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-opt-icon {
+	display: none;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-submit-btn {
+	border-radius: 8px;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-option-row {
+	padding-left: 10px;
+}
+
+.feedback-sdk-modal[data-design="minimal"] .fbk-option:hover .fbk-option-row,
+.feedback-sdk-modal[data-design="minimal"] .fbk-option.fbk-active .fbk-option-row {
+	padding-left: 13px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   BOLD — thick gradient top bar in header, strong borders
+   ──────────────────────────────────────────────────────────────── */
+.feedback-sdk-modal[data-design="bold"] {
+	border-radius: 16px;
+	overflow: hidden;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-modal-header {
+	background: var(--fbk-gradient);
+	border-bottom: none;
+	padding-bottom: 18px;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-modal-brand-name {
+	color: #fff;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-modal-close {
+	background: rgba(255, 255, 255, .2);
+	border-color: rgba(255, 255, 255, .3);
+	color: #fff;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-modal-close:hover {
+	background: rgba(255, 255, 255, .35);
+	color: #fff;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-modal-question {
+	font-size: 15px;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-option {
+	border-width: 2px;
+	border-radius: 10px;
+}
+
+.feedback-sdk-modal[data-design="bold"] .fbk-submit-btn {
+	border-radius: 10px;
+	padding: 10px 24px;
+	font-size: 14px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   GLASS — frosted glass effect on the modal itself
+   ──────────────────────────────────────────────────────────────── */
+.feedback-sdk-modal[data-design="glass"] {
+	background: rgba(255, 255, 255, .65);
+	backdrop-filter: blur(24px) saturate(1.8);
+	-webkit-backdrop-filter: blur(24px) saturate(1.8);
+	border: 1px solid rgba(255, 255, 255, .5);
+	border-radius: 24px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, .18);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-modal-header,
+.feedback-sdk-modal[data-design="glass"] .fbk-modal-footer {
+	background: transparent;
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-option {
+	background: rgba(255, 255, 255, .50);
+	border-color: rgba(255, 255, 255, .70);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-option:hover {
+	background: rgba(255, 255, 255, .75);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-option.fbk-active {
+	background: rgba(255, 255, 255, .90);
+	border-color: var(--fbk-opt-active-bdr);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-option-ta {
+	background: rgba(255, 255, 255, .55);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-cancel-btn {
+	background: rgba(0, 0, 0, .07);
+}
+
+.feedback-sdk-modal[data-design="glass"] .fbk-cancel-btn:hover {
+	background: rgba(0, 0, 0, .12);
+}
+
+/* midnight theme: darker glass */
+.feedback-sdk-overlay #feedback-sdk-modal-[data-theme="midnight"][data-design="glass"] .feedback-sdk-modal {
+	background: rgba(20, 20, 35, .70);
+	border-color: rgba(255, 255, 255, .12);
+}
